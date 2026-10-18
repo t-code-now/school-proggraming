@@ -19,9 +19,15 @@
 - **הזנת קוד** (כל משתמש): חלון הסנכרון ← הזנת הקוד ← "התחבר".
 - **הנפקת קוד חדש / עמוד ניהול קודים** (מנהל בלבד, `tamirmaidani@gmail.com`): הכפתור "🔐 ניהול קודים" או הכתובת `index.html#admin`.
 
-האפליקציה משתמשת באותו פרויקט Firebase (`pe-app-db`), אבל שומרת את הנתונים בנתיב נפרד (`artifacts/standalone-coding-app/...`). כך הקודים והנתונים של התכנית הזו נפרדים לגמרי מאלה של החינוך הגופני.
-אם `firestore.rules` כבר פורסם עבור `pe-app`, אין צורך בהגדרה נוספת: החוקים חלים על כל `appId`.
-אם האתר מתארח בדומיין חדש (לא `t-code-now.github.io`), צריך להוסיף אותו ב-Firebase Console › Authentication › Settings › Authorized domains.
+האפליקציה משתמשת בפרויקט Firebase נפרד משלה: `school-programming-40d60`. אין לה שום קשר לפרויקט של החינוך הגופני (`pe-app-db`), כך שהקודים והנתונים נפרדים לגמרי.
+
+### הגדרה חד-פעמית ב-Firebase Console (פרויקט `school-programming-40d60`)
+
+1. **Authentication › Sign-in method**: להפעיל את **Anonymous** ואת **Google**.
+2. **Authentication › Settings › Authorized domains**: להוסיף את `t-code-now.github.io`.
+3. **Firestore Database › Rules**: להעתיק את התוכן של `firestore.rules` ולפרסם (Publish).
+
+כדי להחליף את חשבון המנהל צריך לעדכן את הכתובת בשני מקומות: `ADMIN_EMAIL` ב-`index.html` וב-`firestore.rules`.
 
 הנתונים המקומיים נשמרים בדפדפן עם הקידומת `coding_app:`, כך שהם לא מתערבבים עם נתונים של אתרים אחרים באותו דומיין.
 
