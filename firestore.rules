@@ -1,0 +1,42 @@
+rules_version = '2';
+
+// חוקי אבטחה ל-Firestore של התכנית השנתית.
+// יש לפרסם אותם ב-Firebase Console › Firestore Database › Rules (העתק-הדבק),
+// או עם הפקודה: firebase deploy --only firestore:rules
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // החשבון היחיד שמורשה להנפיק / לבטל / למחוק קודים
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email == 'tamirmaidani@gmail.com'
+        && request.auth.token.email_verified == true;
+    }
+
+    match /artifacts/{appId}/public/data {
+
+      // רישום הקודים: סטטוס (active / revoked), תיאור, תאריך יצירה. מנהל בלבד.
+      match /codes/{code} {
+        allow read, write: if isAdmin();
+      }
+
+      // נתוני התכנית של כל קוד.
+      // מי שמחזיק בקוד פעיל יכול לקרוא ולעדכן אותו – אבל לא ליצור קוד חדש,
+      // לא לראות רשימת קודים ולא למחוק.
+      match /syncs/{code} {
+        function codeIsActive() {
+          let codePath = /databases/$(database)/documents/artifacts/$(appId)/public/data/codes/$(code);
+          return exists(codePath) && get(codePath).data.status == 'active';
+        }
+
+        allow get, update: if isAdmin() || (request.auth != null && codeIsActive());
+        allow list, create, delete: if isAdmin();
+      }
+    }
+
+    // כל השאר חסום
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

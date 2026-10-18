@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>תוכנית עבודה שנתית - תכנות ורובוטיקה</title>
+  <style>
+    :root {
+      --bg-color: #f0f2f5;
+      --card-bg: #ffffff;
+      --text-color: #1c1e21;
+      --border-color: #e4e6eb;
+      --primary-color: #1877f2;
+      --status-red-bg: #ffebe9;
+      --status-red-border: #ff4d4f;
+      --status-yellow-bg: #fffbe6;
+      --status-yellow-border: #faad14;
+      --status-green-bg: #f6ffed;
+      --status-green-border: #52c41a;
+    }
+
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-color); margin: 0; padding: 20px; direction: rtl; }
+    .container { max-width: 1150px; margin: 0 auto; }
+
+    header {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    h1 { margin: 0 0 8px 0; color: #1a237e; font-size: 1.8rem; }
+    p.subtitle { margin: 0; color: #65676b; font-size: 0.95rem; }
+
+    .top-bar {
+      background: var(--card-bg);
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tab-btn {
+      padding: 10px 18px;
+      background: #e4e6eb;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #4b4f56;
+      transition: all 0.2s;
+    }
+    .tab-btn.active { background: var(--primary-color); color: white; }
+
+    .action-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      padding: 9px 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.85rem;
+      transition: opacity 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      justify-content: center;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-manage { background-color: #6c757d; color: white; }
+    .btn-lesson-manage { background-color: #007bff; color: white; }
+    .btn-reset { background-color: #ff4d4f; color: white; }
+    .btn-print { background-color: var(--primary-color); color: white; }
+    .btn-export { background-color: #28a745; color: white; }
+    .btn-import { background-color: #17a2b8; color: white; }
+    .btn-move { background-color: #f39c12; color: white; }
+
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .filter-bar input, .filter-bar select {
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      background: var(--card-bg);
+    }
+    .filter-bar input { flex: 1; min-width: 200px; }
+
+    .month-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .month-header {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: #1a237e;
+      border-bottom: 2px solid var(--primary-color);
+      padding-bottom: 8px;
+      margin-bottom: 16px;
+    }
+
+    .lesson-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 12px 16px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border-right: 6px solid var(--status-red-border);
+      background-color: var(--status-red-bg);
+      transition: all 0.25s ease;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .lesson-item.yellow {
+      background-color: var(--status-yellow-bg);
+      border-right-color: var(--status-yellow-border);
+    }
+    .lesson-item.green {
+      background-color: var(--status-green-bg);
+      border-right-color: var(--status-green-border);
+    }
+
+    .lesson-content { flex: 1; min-width: 260px; }
+    .lesson-text { font-size: 0.95rem; font-weight: 600; }
+    .assessment-criteria {
+      margin-top: 6px;
+      font-size: 0.85rem;
+      color: #2c3e50;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 6px 10px;
+      border-radius: 6px;
+      border-right: 4px solid #17a2b8;
+      display: inline-block;
+    }
+
+    .checkboxes { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      user-select: none;
+      background: rgba(255,255,255,0.8);
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border-color);
+    }
+    .checkbox-label input { cursor: pointer; width: 17px; height: 17px; }
+
+    /* Modals */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      width: 92%;
+      max-width: 600px;
+      direction: rtl;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+    .modal-header { font-size: 1.2rem; font-weight: bold; margin-bottom: 16px; border-bottom: 1px solid #ccc; padding-bottom: 8px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 4px; }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 0.9rem;
+    }
+    .class-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+    .class-row { display: flex; justify-content: space-between; align-items: center; background: #f8f9fa; padding: 8px 12px; border-radius: 6px; }
+    .btn-delete { background: #ff4d4f; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+
+    /* סטטוס ענן */
+    .cloud-status {
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        background: var(--card-bg);
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        z-index: 100;
+        opacity: 0.9;
+    }
+    .cloud-indicator {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: #ccc;
+    }
+    .cloud-indicator.online { background-color: var(--status-green-border); }
+    .cloud-indicator.syncing { background-color: var(--status-yellow-border); }
+    .cloud-indicator.error { background-color: var(--status-red-border); }
+
+    #cloudUnconnectedView, #cloudConnectedView { display: flex; flex-direction: column; gap: 15px; }
+    .sync-code-display { background: #f0f2f5; border: 2px dashed var(--primary-color); padding: 12px; border-radius: 8px; font-family: monospace; font-size: 1.5rem; font-weight: bold; color: var(--primary-color); cursor: pointer; letter-spacing: 3px; text-align: center; transition: background 0.2s; }
+    .sync-code-display:hover { background: #e4e6eb; }
+
+    /* עמוד ניהול קודים */
+    .admin-content { max-width: 720px; }
+    .admin-new-code { background: #f8f9fa; border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; }
+    .admin-codes-list { display: flex; flex-direction: column; gap: 10px; }
+    .admin-code-row { border: 1px solid var(--border-color); border-radius: 10px; padding: 12px; background: #fff; display: flex; flex-direction: column; gap: 6px; }
+    .admin-code-row.revoked { background: #fafafa; opacity: 0.8; }
+    .admin-code-main { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .admin-code { font-family: monospace; font-size: 1.2rem; font-weight: bold; letter-spacing: 2px; color: var(--primary-color); cursor: pointer; }
+    .admin-code-row.revoked .admin-code { color: #888; text-decoration: line-through; }
+    .admin-badge { font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; font-weight: bold; }
+    .admin-badge.active { background: var(--status-green-bg); color: #389e0d; border: 1px solid var(--status-green-border); }
+    .admin-badge.revoked { background: var(--status-red-bg); color: #cf1322; border: 1px solid var(--status-red-border); }
+    .admin-badge.device { background: #e6f4ff; color: var(--primary-color); border: 1px solid #91caff; }
+    .admin-code-owner { font-size: 1rem; font-weight: bold; color: var(--text-color); }
+    .admin-code-owner.empty { font-weight: normal; font-style: italic; color: #999; }
+    .admin-code-meta { font-size: 0.8rem; color: #65676b; }
+    .admin-code-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .admin-code-actions .btn { padding: 5px 10px; font-size: 0.8rem; }
+
+    @media print {
+      .top-bar, .filter-bar, .action-btns, .cloud-status { display: none !important; }
+      .grade-section { display: block !important; page-break-after: always; }
+      body { background: white; padding: 0; }
+      .month-card { box-shadow: none; border: 1px solid #ddd; }
+    }
+
+    /* תוספות לתכנית התכנות */
+    .subject-tabs { display: none; gap: 8px; flex-wrap: wrap; width: 100%; padding-top: 12px; border-top: 1px solid var(--border-color); }
+    .subject-tabs.visible { display: flex; }
+    .subject-btn { padding: 8px 16px; background: #f0f2f5; border: 2px solid #e4e6eb; border-radius: 20px; cursor: pointer; font-weight: bold; color: #4b4f56; transition: all 0.2s; }
+    .subject-btn.active { background: #e7f0ff; border-color: var(--primary-color); color: var(--primary-color); }
+
+    .plan-summary { background: var(--card-bg); border-radius: 12px; padding: 14px 22px; margin-bottom: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .plan-title { font-size: 1.2rem; font-weight: bold; color: #1a237e; }
+    .plan-progress { font-size: 0.9rem; color: #444; display: flex; align-items: center; gap: 10px; }
+    .progress-bar { width: 160px; height: 10px; background: #e4e6eb; border-radius: 5px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--status-green-border); transition: width 0.3s; }
+    .draft-note { width: 100%; font-size: 0.85rem; color: #8a6d00; background: var(--status-yellow-bg); border: 1px solid var(--status-yellow-border); border-radius: 8px; padding: 8px 12px; }
+
+    .assessment-criteria { white-space: pre-line; }
+    details.assessment-criteria summary { cursor: pointer; }
+    details.assessment-criteria[open] summary { margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>תוכנית עבודה שנתית אינטראקטיבית - תכנות ורובוטיקה</h1>
+      <p class="subtitle">מעקב ביצוע לפי כיתות · סקראץ' ג'וניור · רובוטיקה-מיקרוביט · קוד מאנקי (תשפ"ז)</p>
+    </header>
+
+    <div class="top-bar">
+      <div class="tabs" id="gradeTabs"></div>
+
+      <div class="action-btns">
+        <button class="btn btn-lesson-manage" onclick="window.openLessonManagerModal()">📝 ניהול שיעורים</button>
+        <button class="btn btn-manage" onclick="window.openClassModal()">✏️ ניהול כיתות</button>
+        <button class="btn btn-export" onclick="window.exportData()">📥 ייצוא נתונים</button>
+        <button class="btn btn-import" onclick="document.getElementById('importFile').click()">📤 טעינת נתונים</button>
+        <input type="file" id="importFile" accept=".json" style="display: none;" onchange="window.importData(event)">
+        <button class="btn btn-print" onclick="window.print()">🖨️ הדפסה</button>
+        <button class="btn btn-reset" onclick="window.resetAll()">🔄 איפוס</button>
+      </div>
+
+      <div class="subject-tabs" id="subjectTabs"></div>
+    </div>
+
+    <div class="filter-bar">
+      <input type="text" id="searchInput" placeholder="🔍 חפש נושא, מושג, שלבים או מס' שיעור..." oninput="window.filterLessons()">
+      <select id="statusFilter" onchange="window.filterLessons()">
+        <option value="all">כל הסטטוסים</option>
+        <option value="red">טרם בוצע (אדום)</option>
+        <option value="yellow">בוצע חלקית (צהוב)</option>
+        <option value="green">הושלם (ירוק)</option>
+      </select>
+    </div>
+
+    <div id="planSummary" class="plan-summary"></div>
+    <div id="planView" class="grade-section"></div>
+  </div>
+
+  <div class="cloud-status" onclick="window.openCloudModal()" style="cursor: pointer;" title="לחץ להגדרות סנכרון בענן">
+      <div id="cloudIndicator" class="cloud-indicator"></div>
+      <span id="cloudText">מתחבר לענן...</span>
+  </div>
+
+  <!-- Modal ניהול כיתות -->
+  <div class="modal" id="classModal">
+    <div class="modal-content">
+      <div class="modal-header" id="classModalHeader">ניהול כיתות בשכבה הפעילה</div>
+      <p style="font-size: 0.85rem; color: #65676b; margin-top: 0;">רשימת הכיתות משותפת לכל המקצועות של השכבה.</p>
+      <div class="class-list" id="modalClassList"></div>
+      <div class="form-group" style="display: flex; gap: 8px;">
+        <input type="text" id="newClassInput" placeholder="שם כיתה חדשה (לדוגמה: ג'4)" onkeydown="if(event.key==='Enter') window.addClass()">
+        <button class="btn btn-print" onclick="window.addClass()">הוסף</button>
+      </div>
+      <br>
+      <button class="btn btn-manage" style="width: 100%;" onclick="window.closeClassModal()">סגור</button>
+    </div>
+  </div>
+
+  <!-- Modal ניהול שיעורים -->
+  <div class="modal" id="lessonManagerModal">
+    <div class="modal-content">
+      <div class="modal-header" id="lessonManagerHeader">ניהול שיעורים</div>
+
+      <div class="form-group">
+        <label>יחידה / פרק:</label>
+        <select id="mgrMonthSelect" onchange="window.onMgrMonthChange()"></select>
+      </div>
+
+      <div class="form-group">
+        <label>בחר שיעור לעריכה או צור חדש:</label>
+        <select id="mgrLessonSelect" onchange="window.onMgrLessonChange()"></select>
+      </div>
+
+      <div class="form-group">
+        <label>שם השיעור / נושא:</label>
+        <input type="text" id="mgrLessonTitle" placeholder="לדוגמה: 12. לולאות בתוך לולאות">
+      </div>
+
+      <div class="form-group">
+        <label>פירוט / מטרה / שלבים / מחוון (השורה הראשונה מוצגת, השאר נפתח בלחיצה):</label>
+        <textarea id="mgrLessonCriteria" rows="5" placeholder="לדוגמה: מטרה: התלמידים יבינו מהי לולאה&#10;תרגול: שלבים 21–23"></textarea>
+      </div>
+
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;">
+        <button class="btn btn-export" style="flex: 1;" onclick="window.saveMgrLesson()">שמור</button>
+        <button class="btn btn-move" id="btnMoveUpMgrLesson" style="display: none; flex: 1;" onclick="window.moveMgrLesson(-1)">⬆️ למעלה</button>
+        <button class="btn btn-move" id="btnMoveDownMgrLesson" style="display: none; flex: 1;" onclick="window.moveMgrLesson(1)">⬇️ למטה</button>
+        <button class="btn btn-reset" id="btnDeleteMgrLesson" style="display: none; flex: 1;" onclick="window.deleteMgrLesson()">מחק</button>
+        <button class="btn btn-manage" style="flex: 1;" onclick="window.closeLessonManagerModal()">סגור</button>
+      </div>
+
+      <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid #eee; display: flex; gap: 8px; flex-wrap: wrap;">
+        <button class="btn btn-import" style="flex: 1;" onclick="window.addUnit()">➕ יחידה חדשה</button>
+        <button class="btn btn-manage" style="flex: 1;" onclick="window.renameUnit()">✏️ שנה שם יחידה</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal ענן -->
+  <div class="modal" id="cloudModal">
+    <div class="modal-content">
+        <div class="modal-header">☁️ סנכרון ענן (תמידי לכל המכשירים)</div>
+        <p style="font-size: 0.9rem; color: #65676b; margin-bottom: 20px;">מאפשר שמירת נתונים מאובטחת בענן, לגישה ולסנכרון מכל מכשיר (סמארטפון או מחשב אחר).</p>
+
+        <div id="cloudUnconnectedView">
+            <div style="text-align: center; font-size: 0.9rem; color: #65676b;">יש לך קוד? הזן אותו והנתונים ייטענו מיד:</div>
+            <div class="form-group" style="display: flex; gap: 8px;">
+                <input type="text" id="existingSyncId" placeholder="הזן קוד סנכרון..." dir="ltr" autocomplete="off" style="text-align: center; font-family: monospace; font-size: 1.1rem; letter-spacing: 2px;" onkeydown="if(event.key==='Enter') window.connectExistingSync()">
+                <button class="btn btn-print" onclick="window.connectExistingSync()">התחבר</button>
+            </div>
+            <div style="text-align: center; margin: 5px 0; font-size: 0.85rem; color: #65676b;">הנפקת קוד חדש מותרת למנהל בלבד (דורש כניסה עם חשבון Google):</div>
+            <button class="btn btn-lesson-manage" style="width: 100%; padding: 12px; font-size: 1rem;" onclick="window.createNewSync()">
+                שמירה בענן – הנפק קוד חדש 🔐
+            </button>
+        </div>
+
+        <div id="cloudConnectedView" style="display: none; text-align: center;">
+            <div style="background: var(--status-green-bg); border: 1px solid var(--status-green-border); border-radius: 10px; padding: 20px; margin-bottom: 20px;">
+                <h3 style="color: #28a745; margin-top: 0;">המכשיר מסונכרן לענן ✅</h3>
+                <p style="margin-bottom: 10px; font-size: 0.9rem; color: #444;">קוד הגיבוי האישי שלך:</p>
+                <div class="sync-code-display" onclick="window.copySyncId()" title="לחץ להעתקה">
+                    <span id="displaySyncId"></span>
+                </div>
+                <p style="font-size: 0.8rem; color: #666; margin-top: 10px;">שמור קוד זה כדי להתחבר מהסמארטפון או ממחשב אחר.</p>
+            </div>
+            <button class="btn btn-reset" style="width: 100%; padding: 12px;" onclick="window.disconnectSync()">התנתק מהענן (המידע המקומי יישמר)</button>
+        </div>
+
+        <br>
+        <button class="btn btn-manage" style="width: 100%; margin-bottom: 8px;" onclick="window.openAdminPage()">🔐 ניהול קודים (מנהל)</button>
+        <button class="btn btn-manage" style="width: 100%;" onclick="window.closeCloudModal()">סגור</button>
+    </div>
+  </div>
+
+  <!-- עמוד ניהול קודים (מנהל בלבד) -->
+  <div class="modal" id="adminModal">
+    <div class="modal-content admin-content">
+        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+            <span>🔐 ניהול קודי שמירה בענן</span>
+            <span id="adminUserLabel" style="font-size: 0.8rem; font-weight: normal; color: #65676b;" dir="ltr"></span>
+        </div>
+
+        <div id="adminLoginView" style="text-align: center;">
+            <p style="font-size: 0.9rem; color: #444;">עמוד זה זמין רק לחשבון המנהל.<br>יש להתחבר עם חשבון Google של המנהל.</p>
+            <button class="btn btn-print" style="width: 100%; padding: 12px; font-size: 1rem;" onclick="window.adminLogin()">התחבר עם Google</button>
+        </div>
+
+        <div id="adminPanelView" style="display: none;">
+            <div class="admin-new-code">
+                <div style="font-weight: bold; margin-bottom: 8px;">יצירת קוד חדש</div>
+                <div class="form-group">
+                    <label for="newCodeOwner">שם מלא / כינוי של מקבל הקוד *</label>
+                    <input type="text" id="newCodeOwner" placeholder="לדוגמה: יוסי כהן">
+                </div>
+                <div class="form-group">
+                    <label for="newCodeLabel">הערה (רשות)</label>
+                    <input type="text" id="newCodeLabel" placeholder="לדוגמה: בית ספר הדר, מחשב בבית">
+                </div>
+                <label class="checkbox-label" style="margin-bottom: 10px;">
+                    <input type="checkbox" id="newCodeCopyLocal" checked>
+                    התחל מהנתונים שבמכשיר זה (אחרת – התכנית המובנית)
+                </label>
+                <button class="btn btn-export" style="width: 100%;" onclick="window.adminCreateCode()">➕ צור קוד חדש</button>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin: 16px 0 8px;">
+                <strong>קודים קיימים</strong>
+                <button class="btn btn-manage" style="padding: 4px 10px; font-size: 0.8rem;" onclick="window.adminRefresh()">🔄 רענן</button>
+            </div>
+            <div id="adminCodesList" class="admin-codes-list"></div>
+
+            <br>
+            <button class="btn btn-reset" style="width: 100%;" onclick="window.adminLogout()">התנתק מחשבון המנהל</button>
+        </div>
+
+        <br>
+        <button class="btn btn-manage" style="width: 100%;" onclick="window.closeAdminPage()">סגור</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, updateDoc, deleteDoc, collection, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // =========================================================
+    // 🔑 הגדרות Firebase – אותו פרויקט כמו תכנית החינוך הגופני.
+    // הנתונים של תכנית זו נשמרים בנתיב נפרד (appId), כך שאין ערבוב בין התכניות.
+    // =========================================================
+    const myFirebaseConfig = {
+      apiKey: "AIzaSyD0PtDlw-A547sGs6LdgcV7-bCxsVQaEXk",
+      authDomain: "pe-app-db.firebaseapp.com",
+      projectId: "pe-app-db",
+      storageBucket: "pe-app-db.firebasestorage.app",
+      messagingSenderId: "722767574124",
+      appId: "1:722767574124:web:5ff0bcc30310d6dd1e9449"
+    };
+
+    // 👑 החשבון היחיד שמורשה להנפיק / לבטל / למחוק קודים.
+    // חובה שיהיה זהה לכתובת שב-firestore.rules (שם נאכפת ההרשאה בפועל).
+    const ADMIN_EMAIL = "tamirmaidani@gmail.com";
+
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'standalone-coding-app';
+
+    // =========================================================
+    // 💾 אחסון מקומי עם קידומת – כדי שהתכנית לא תתנגש בנתונים של אתרים
+    // אחרים באותו דומיין (למשל תכנית החינוך הגופני ב-github.io)
+    // =========================================================
+    const NS = 'coding_app:';
+    const store = {
+      get: (k) => localStorage.getItem(NS + k),
+      set: (k, v) => localStorage.setItem(NS + k, v),
+      remove: (k) => localStorage.removeItem(NS + k),
+      keys: () => {
+        const out = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && key.startsWith(NS)) out.push(key.slice(NS.length));
+        }
+        return out;
+      },
+      // מוחק רק את המפתחות של תכנית זו
+      clear: () => store.keys().forEach(k => store.remove(k))
+    };
+
+    // בדיקה האם המשתמש הזין מפתח API אישי
+    const firebaseConfig = (myFirebaseConfig.apiKey && myFirebaseConfig.apiKey !== "YOUR_API_KEY")
+      ? myFirebaseConfig
+      : (typeof __firebase_config !== 'undefined'
+          ? JSON.parse(__firebase_config)
+          : (store.get('custom_firebase_config') ? JSON.parse(store.get('custom_firebase_config')) : null));
+
+    let db = null, auth = null, userId = null;
+    let syncTimeout = null;
+    let isCloudReady = false;
+    let currentSyncId = store.get('sync_id') || null;
+
+    // מפתחות שאינם חלק מנתוני התכנית ולא נשמרים בענן
+    const LOCAL_ONLY_KEYS = ['sync_id', 'custom_firebase_config'];
+    // תווים ללא דו-משמעות (בלי O/0, I/1)
+    const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+
+    const syncDocRef = (code) => doc(db, 'artifacts', appId, 'public', 'data', 'syncs', code);
+    const codeDocRef = (code) => doc(db, 'artifacts', appId, 'public', 'data', 'codes', code);
+    const codesCol = () => collection(db, 'artifacts', appId, 'public', 'data', 'codes');
+
+    const cloudIndicator = document.getElementById('cloudIndicator');
+    const cloudText = document.getElementById('cloudText');
+
+    function updateCloudStatus(status) {
+        if (status === 'online') {
+            cloudIndicator.className = 'cloud-indicator online';
+            cloudText.innerText = currentSyncId ? `מחובר לענן (${currentSyncId})` : 'מקומי בלבד (לחץ לסנכרון)';
+        } else if (status === 'syncing') {
+            cloudIndicator.className = 'cloud-indicator syncing';
+            cloudText.innerText = 'מסנכרן לענן...';
+        } else if (status === 'error') {
+            cloudIndicator.className = 'cloud-indicator error';
+            cloudText.innerText = 'שמירה מקומית פעילה';
+        }
+    }
+
+    function normalizeCode(raw) {
+        return (raw || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    }
+
+    function generateCode(length = 8) {
+        const bytes = new Uint32Array(length);
+        crypto.getRandomValues(bytes);
+        let out = '';
+        for (let i = 0; i < length; i++) out += CODE_ALPHABET[bytes[i] % CODE_ALPHABET.length];
+        return out;
+    }
+
+    function isPermissionError(e) {
+        return e && (e.code === 'permission-denied' || e.code === 'firestore/permission-denied');
+    }
+
+    function isAdminUser() {
+        const u = auth && auth.currentUser;
+        return !!(u && !u.isAnonymous && u.emailVerified && (u.email || '').toLowerCase() === ADMIN_EMAIL);
+    }
+
+    function collectLocalData() {
+        const data = {};
+        for (const key of store.keys()) {
+            if (!LOCAL_ONLY_KEYS.includes(key)) data[key] = store.get(key);
+        }
+        return data;
+    }
+
+    // טוען נתונים מהענן אל המכשיר ומציג אותם מיד
+    function applyCloudData(code, data) {
+        const firebaseCfg = store.get('custom_firebase_config');
+        store.clear();
+        if (firebaseCfg) store.set('custom_firebase_config', firebaseCfg);
+        store.set('sync_id', code);
+        currentSyncId = code;
+
+        // נתונים ריקים = התכנית המובנית (נבנית אוטומטית כשאין נתונים שמורים)
+        const keys = Object.keys(data || {}).filter(k => !k.startsWith('__'));
+        for (const key of keys) store.set(key, data[key]);
+    }
+
+    function refreshView() {
+        renderTabs();
+        renderPlan();
+        if (window.filterLessons) window.filterLessons();
+    }
+
+    // הקוד בוטל / נמחק ע"י המנהל – מנתקים את המכשיר, הנתונים המקומיים נשמרים
+    function handleRevokedCode() {
+        const old = currentSyncId;
+        currentSyncId = null;
+        store.remove('sync_id');
+        updateCloudStatus('online');
+        alert(`קוד הסנכרון ${old} אינו פעיל יותר (בוטל או נמחק).\nהנתונים נשמרו במכשיר זה. ניתן להזין קוד אחר בחלון הסנכרון.`);
+    }
+
+    async function initFirebase() {
+        if (!firebaseConfig) {
+            updateCloudStatus('online'); // שמירה מקומית ב-LocalStorage עובדת מעולה
+            return false;
+        }
+        try {
+            const app = initializeApp(firebaseConfig);
+            db = getFirestore(app);
+            auth = getAuth(app);
+            await auth.authStateReady();
+
+            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                await signInWithCustomToken(auth, __initial_auth_token);
+            } else if (!auth.currentUser) {
+                // משתמש רגיל – כניסה אנונימית. מנהל שכבר התחבר עם Google נשאר מחובר.
+                await signInAnonymously(auth);
+            }
+            userId = auth.currentUser.uid;
+            isCloudReady = true;
+            updateCloudStatus('online');
+            return true;
+        } catch (e) {
+            console.error("Firebase init failed", e);
+            updateCloudStatus('error');
+            return false;
+        }
+    }
+
+    window.scheduleCloudSync = function() {
+        if (!isCloudReady || !currentSyncId) return;
+
+        updateCloudStatus('syncing');
+        if (syncTimeout) clearTimeout(syncTimeout);
+
+        syncTimeout = setTimeout(async () => {
+             const code = currentSyncId;
+             if (!code) return;
+             try {
+                 await setDoc(syncDocRef(code), collectLocalData());
+                 updateCloudStatus('online');
+             } catch (e) {
+                 console.error("Cloud sync failed", e);
+                 if (isPermissionError(e) && code === currentSyncId) {
+                     handleRevokedCode();
+                 } else {
+                     updateCloudStatus('error');
+                 }
+             }
+        }, 1500);
+    };
+
+    window.openCloudModal = function() {
+        const modal = document.getElementById('cloudModal');
+        const viewUnconnected = document.getElementById('cloudUnconnectedView');
+        const viewConnected = document.getElementById('cloudConnectedView');
+        const displayId = document.getElementById('displaySyncId');
+        const existingInput = document.getElementById('existingSyncId');
+
+        existingInput.value = '';
+
+        if (currentSyncId) {
+            viewUnconnected.style.display = 'none';
+            viewConnected.style.display = 'block';
+            displayId.innerText = currentSyncId;
+        } else {
+            viewUnconnected.style.display = 'flex';
+            viewConnected.style.display = 'none';
+        }
+
+        modal.style.display = 'flex';
+    };
+
+    window.closeCloudModal = function() {
+        document.getElementById('cloudModal').style.display = 'none';
+    };
+
+    // ===================== הרשאות מנהל =====================
+
+    // מבקש כניסה עם חשבון Google של המנהל. מחזיר true רק אם אומת החשבון הנכון.
+    async function ensureAdmin() {
+        if (!isCloudReady) {
+            alert('אין חיבור לשרת הענן. בדוק את החיבור לאינטרנט ונסה שוב.');
+            return false;
+        }
+        if (isAdminUser()) return true;
+
+        const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({ login_hint: ADMIN_EMAIL, prompt: 'select_account' });
+        try {
+            await signInWithPopup(auth, provider);
+        } catch (e) {
+            console.error("Admin sign-in failed", e);
+            if (e.code === 'auth/popup-blocked') {
+                alert('הדפדפן חסם את חלון ההתחברות. אפשר חלונות קופצים לאתר זה ונסה שוב.');
+            } else if (e.code === 'auth/unauthorized-domain') {
+                alert('הדומיין של האתר אינו מורשה ב-Firebase.\nיש להוסיף אותו ב-Firebase Console › Authentication › Settings › Authorized domains.');
+            } else if (e.code === 'auth/operation-not-allowed') {
+                alert('כניסה עם Google אינה מופעלת ב-Firebase.\nיש להפעיל אותה ב-Firebase Console › Authentication › Sign-in method › Google.');
+            } else if (e.code !== 'auth/popup-closed-by-user' && e.code !== 'auth/cancelled-popup-request') {
+                alert('ההתחברות נכשלה: ' + (e.message || e.code));
+            }
+            if (!auth.currentUser) await signInAnonymously(auth).catch(() => {});
+            return false;
+        }
+
+        if (!isAdminUser()) {
+            const email = auth.currentUser && auth.currentUser.email;
+            await signOut(auth);
+            await signInAnonymously(auth).catch(() => {});
+            alert(`החשבון ${email || ''} אינו מורשה להנפיק קודים.\nרק החשבון ${ADMIN_EMAIL} יכול לבצע פעולה זו.`);
+            return false;
+        }
+        userId = auth.currentUser.uid;
+        return true;
+    }
+
+    // יוצר קוד חדש בענן (רישום + נתונים). מנהל בלבד.
+    async function issueNewCode(label, initialData, owner = '') {
+        let code;
+        for (let attempt = 0; attempt < 5; attempt++) {
+            code = generateCode();
+            const existing = await getDoc(codeDocRef(code));
+            if (!existing.exists()) break;
+        }
+        await setDoc(codeDocRef(code), {
+            status: 'active',
+            label: label || '',
+            owner: owner || '',
+            createdAt: serverTimestamp(),
+            createdBy: auth.currentUser.email
+        });
+        await setDoc(syncDocRef(code), initialData);
+        return code;
+    }
+
+    // כפתור "שמירה בענן" – דורש אימות מנהל, ואז מנפיק קוד ומחבר אליו את המכשיר
+    window.createNewSync = async function() {
+        if (!(await ensureAdmin())) return;
+        try {
+            updateCloudStatus('syncing');
+            const code = await issueNewCode('נוצר מכפתור שמירה בענן', collectLocalData());
+            currentSyncId = code;
+            store.set('sync_id', code);
+            updateCloudStatus('online');
+            window.openCloudModal();
+        } catch (e) {
+            console.error("Create code failed", e);
+            updateCloudStatus('error');
+            alert('יצירת הקוד נכשלה: ' + (isPermissionError(e) ? 'אין הרשאה (בדוק שחוקי האבטחה ב-Firestore פורסמו).' : (e.message || e.code)));
+        }
+    };
+
+    // הזנת קוד קיים – טעינה מיידית של הנתונים מהענן
+    window.connectExistingSync = async function() {
+        const code = normalizeCode(document.getElementById('existingSyncId').value);
+        if (!code) {
+            alert('נא להזין קוד סנכרון.');
+            return;
+        }
+
+        if (!isCloudReady) {
+            alert('אין חיבור לשרת הענן. בדוק את החיבור לאינטרנט ונסה שוב.');
+            return;
+        }
+
+        try {
+            updateCloudStatus('syncing');
+            const docSnap = await getDoc(syncDocRef(code));
+
+            if (docSnap.exists()) {
+                applyCloudData(code, docSnap.data());
+                updateCloudStatus('online');
+                window.closeCloudModal();
+                refreshView();
+                alert('הנתונים נטענו בהצלחה! ✅');
+            } else {
+                updateCloudStatus('online');
+                alert('קוד הסנכרון לא נמצא.');
+            }
+        } catch (e) {
+            console.error(e);
+            updateCloudStatus('online');
+            if (isPermissionError(e)) {
+                alert('הקוד אינו קיים או שבוטל ע"י המנהל.');
+            } else {
+                alert('שגיאה בהתחברות לענן. בדוק את החיבור לאינטרנט ונסה שוב.');
+            }
+        }
+    };
+
+    window.disconnectSync = function() {
+        if (confirm('האם להתנתק מהענן? (הנתונים יישארו שמורים מקומית במכשיר זה)')) {
+            currentSyncId = null;
+            store.remove('sync_id');
+            updateCloudStatus('online');
+            window.closeCloudModal();
+        }
+    };
+
+    function copyText(text) {
+        try {
+            const el = document.createElement('textarea');
+            el.value = text;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            alert('הקוד הועתק: ' + text);
+        } catch(e) {
+            console.error("Copy failed", e);
+        }
+    }
+
+    window.copySyncId = function() {
+        if (!currentSyncId) return;
+        copyText(currentSyncId);
+    };
+
+    // ===================== עמוד ניהול קודים =====================
+
+    function renderAdminView() {
+        const isAdmin = isAdminUser();
+        document.getElementById('adminLoginView').style.display = isAdmin ? 'none' : 'block';
+        document.getElementById('adminPanelView').style.display = isAdmin ? 'block' : 'none';
+        document.getElementById('adminUserLabel').innerText = isAdmin ? auth.currentUser.email : '';
+    }
+
+    window.openAdminPage = async function() {
+        window.closeCloudModal();
+        document.getElementById('adminModal').style.display = 'flex';
+        renderAdminView();
+        if (isAdminUser()) await window.adminRefresh();
+    };
+
+    window.closeAdminPage = function() {
+        document.getElementById('adminModal').style.display = 'none';
+        if (location.hash === '#admin') history.replaceState(null, '', location.pathname + location.search);
+    };
+
+    window.adminLogin = async function() {
+        if (await ensureAdmin()) {
+            renderAdminView();
+            await window.adminRefresh();
+        }
+    };
+
+    window.adminLogout = async function() {
+        if (!confirm('להתנתק מחשבון המנהל? (המכשיר ימשיך להסתנכרן כרגיל)')) return;
+        await signOut(auth);
+        await signInAnonymously(auth).catch(e => console.error(e));
+        userId = auth.currentUser ? auth.currentUser.uid : null;
+        renderAdminView();
+    };
+
+    function formatDate(ts) {
+        if (!ts || !ts.toDate) return '—';
+        return ts.toDate().toLocaleString('he-IL', { dateStyle: 'short', timeStyle: 'short' });
+    }
+
+    function escapeHtml(s) {
+        return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    window.adminRefresh = async function() {
+        const list = document.getElementById('adminCodesList');
+        if (!isAdminUser()) { renderAdminView(); return; }
+        list.innerHTML = '<div style="text-align:center; color:#65676b;">טוען...</div>';
+        try {
+            const codesSnap = await getDocs(codesCol());
+            const codes = {};
+            codesSnap.forEach(d => { codes[d.id] = d.data(); });
+
+            const ids = Object.keys(codes).sort((a, b) => {
+                const ta = codes[a].createdAt && codes[a].createdAt.toMillis ? codes[a].createdAt.toMillis() : 0;
+                const tb = codes[b].createdAt && codes[b].createdAt.toMillis ? codes[b].createdAt.toMillis() : 0;
+                return tb - ta;
+            });
+
+            if (ids.length === 0) {
+                list.innerHTML = '<div style="text-align:center; color:#65676b;">אין עדיין קודים.</div>';
+                return;
+            }
+
+            list.innerHTML = ids.map(id => {
+                const c = codes[id];
+                const active = c.status === 'active';
+                const isThisDevice = id === currentSyncId;
+                return `
+                <div class="admin-code-row ${active ? '' : 'revoked'}">
+                    <div class="admin-code-main">
+                        <span class="admin-code" dir="ltr" onclick="window.adminCopy('${id}')" title="לחץ להעתקה">${id}</span>
+                        <span class="admin-badge ${active ? 'active' : 'revoked'}">${active ? 'פעיל' : 'מבוטל'}</span>
+                        ${isThisDevice ? '<span class="admin-badge device">המכשיר הזה</span>' : ''}
+                    </div>
+                    <div class="admin-code-owner ${c.owner ? '' : 'empty'}">👤 ${c.owner ? escapeHtml(c.owner) : 'לא הוזן שם'}</div>
+                    <div class="admin-code-meta">${escapeHtml(c.label || '')}${c.label ? ' · ' : ''}נוצר: ${formatDate(c.createdAt)}</div>
+                    <div class="admin-code-actions">
+                        ${active
+                            ? `<button class="btn btn-move" onclick="window.adminSetStatus('${id}', 'revoked')">⛔ בטל</button>`
+                            : `<button class="btn btn-export" onclick="window.adminSetStatus('${id}', 'active')">✅ הפעל מחדש</button>`}
+                        ${active && !isThisDevice ? `<button class="btn btn-import" onclick="window.adminConnectDevice('${id}')">📲 חבר מכשיר זה</button>` : ''}
+                        <button class="btn btn-manage" onclick="window.adminEditCode('${id}')">✏️ ערוך שם</button>
+                        <button class="btn btn-reset" onclick="window.adminDeleteCode('${id}')">🗑️ מחק</button>
+                    </div>
+                </div>`;
+            }).join('');
+        } catch (e) {
+            console.error("Admin refresh failed", e);
+            list.innerHTML = `<div style="color:#ff4d4f;">טעינת הקודים נכשלה: ${isPermissionError(e) ? 'אין הרשאה – ודא שחוקי האבטחה (firestore.rules) פורסמו ב-Firebase.' : escapeHtml(e.message || e.code)}</div>`;
+        }
+    };
+
+    window.adminCopy = function(code) { copyText(code); };
+
+    window.adminCreateCode = async function() {
+        if (!(await ensureAdmin())) { renderAdminView(); return; }
+        const owner = document.getElementById('newCodeOwner').value.trim();
+        const label = document.getElementById('newCodeLabel').value.trim();
+        if (!owner) {
+            alert('נא להזין שם מלא או כינוי של מקבל הקוד.');
+            document.getElementById('newCodeOwner').focus();
+            return;
+        }
+        const copyLocal = document.getElementById('newCodeCopyLocal').checked;
+        try {
+            const code = await issueNewCode(label, copyLocal ? collectLocalData() : {}, owner);
+            document.getElementById('newCodeOwner').value = '';
+            document.getElementById('newCodeLabel').value = '';
+            await window.adminRefresh();
+            copyText(code);
+        } catch (e) {
+            console.error("Create code failed", e);
+            alert('יצירת הקוד נכשלה: ' + (e.message || e.code));
+        }
+    };
+
+    // עריכת שם המקבל וההערה של קוד קיים
+    window.adminEditCode = async function(code) {
+        try {
+            const snap = await getDoc(codeDocRef(code));
+            const c = snap.exists() ? snap.data() : {};
+            const owner = prompt(`שם מלא / כינוי של מקבל הקוד ${code}:`, c.owner || '');
+            if (owner === null) return;
+            const label = prompt(`הערה לקוד ${code} (רשות):`, c.label || '');
+            if (label === null) return;
+            await updateDoc(codeDocRef(code), { owner: owner.trim(), label: label.trim(), updatedAt: serverTimestamp() });
+            await window.adminRefresh();
+        } catch (e) {
+            console.error(e);
+            alert('העדכון נכשל: ' + (e.message || e.code));
+        }
+    };
+
+    window.adminSetStatus = async function(code, status) {
+        const msg = status === 'revoked'
+            ? `לבטל את הקוד ${code}?\nמכשירים המחוברים לקוד זה יפסיקו להסתנכרן (הנתונים בענן נשמרים וניתן להפעיל מחדש).`
+            : `להפעיל מחדש את הקוד ${code}?`;
+        if (!confirm(msg)) return;
+        try {
+            await updateDoc(codeDocRef(code), { status, updatedAt: serverTimestamp() });
+            await window.adminRefresh();
+        } catch (e) {
+            console.error(e);
+            alert('הפעולה נכשלה: ' + (e.message || e.code));
+        }
+    };
+
+    window.adminDeleteCode = async function(code) {
+        if (!confirm(`למחוק לצמיתות את הקוד ${code} ואת כל הנתונים השמורים בו בענן?\nלא ניתן לשחזר פעולה זו.`)) return;
+        try {
+            await deleteDoc(syncDocRef(code));
+            await deleteDoc(codeDocRef(code));
+            if (code === currentSyncId) {
+                currentSyncId = null;
+                store.remove('sync_id');
+                updateCloudStatus('online');
+            }
+            await window.adminRefresh();
+        } catch (e) {
+            console.error(e);
+            alert('המחיקה נכשלה: ' + (e.message || e.code));
+        }
+    };
+
+    window.adminConnectDevice = async function(code) {
+        if (!confirm(`לחבר מכשיר זה לקוד ${code}? הנתונים במכשיר יוחלפו בנתונים מהענן.`)) return;
+        try {
+            const snap = await getDoc(syncDocRef(code));
+            applyCloudData(code, snap.exists() ? snap.data() : {});
+            updateCloudStatus('online');
+            refreshView();
+            await window.adminRefresh();
+        } catch (e) {
+            console.error(e);
+            alert('החיבור נכשל: ' + (e.message || e.code));
+        }
+    };
+
+    // =========================================================
+    // 📚 תכניות הלימוד המובנות
+    // כל שיעור: text = כותרת, criteria = פירוט (שורה ראשונה מוצגת, השאר נפתח בלחיצה)
+    // =========================================================
+    const L = (text, criteria = '') => ({ text, criteria });
+    // שיעור מיקרוביט לפי מבנה המסמך: מטרה / פתיחה / הדגמה / תרגול / סיכום ואתגר
+    const MB = (text, goal, open, demo, practice, challenge) => L(text,
+      `מטרה: ${goal}\nפתיחה (15 דק'): ${open}\nהדגמה (25 דק'): ${demo}\nתרגול (35 דק'): ${practice}\nסיכום ואתגר (15 דק'): ${challenge}`);
+
+    const SCRATCHJR_UNITS = [
+      { name: "יחידה 1: היכרות עם סקראץ' ג'וניור", lessons: [
+        L("1. היכרות עם האפליקציה – מסך הבית, יצירת פרויקט ושמירה", "מטרה: התלמידים פותחים פרויקט חדש, מזהים את אזור הבמה, לוח הבלוקים ואזור התסריט."),
+        L("2. דמויות ורקעים – הוספה, מחיקה ושינוי גודל", "מטרה: בחירת דמויות ורקע מהספרייה ומיקומן על הבמה."),
+        L("3. בלוקי תנועה ראשונים – ימינה, שמאלה, למעלה, למטה", "מטרה: הפעלת דמות בעזרת בלוקי תנועה והדגל הירוק."),
+        L("4. רצף פקודות – מסלול לדמות על הרשת", "מטרה: בניית רצף של כמה בלוקים כדי להגיע ליעד; שימוש ברשת (Grid) לספירת צעדים."),
+      ]},
+      { name: "יחידה 2: תנועה ורצפים", lessons: [
+        L("5. מספרים בבלוקים – כמה צעדים?", "מטרה: שינוי הפרמטר המספרי בבלוק התנועה וקיצור התסריט."),
+        L("6. סיבוב, קפיצה וחזרה הביתה", "מטרה: שימוש בבלוקי סיבוב, קפיצה ו'חזור הביתה'."),
+        L("7. מהירות ותזמון – בלוק המתן ובלוק מהירות", "מטרה: שליטה בקצב התנועה בעזרת 'המתן' ו'קבע מהירות'."),
+        L("8. אתגר מבוך – תכנון מסלול ותיקון באגים", "מטרה: תכנון מסלול על דף, בדיקה בתכנית ותיקון שגיאות (Debugging)."),
+      ]},
+      { name: "יחידה 3: מראה וצליל", lessons: [
+        L("9. בלוקי מראה – אמירה (בועת דיבור)", "מטרה: הדמות 'מדברת' בעזרת בלוק 'אמור'."),
+        L("10. גדל, קטן, הסתר והופע", "מטרה: שינוי מראה הדמות במהלך התסריט."),
+        L("11. צלילים והקלטת קול", "מטרה: הוספת צליל מובנה והקלטת קול עצמית."),
+        L("12. עורך הציור – עיצוב דמות ורקע משלי", "מטרה: שימוש בכלי הציור והמצלמה ליצירת דמות אישית."),
+      ]},
+      { name: "יחידה 4: אירועים ומסרים", lessons: [
+        L("13. אירועי התחלה – דגל ירוק ולחיצה על דמות", "מטרה: הבנה שתסריט מתחיל באירוע; כמה תסריטים לאותה דמות."),
+        L("14. כשנוגעים – אינטראקציה בין דמויות", "מטרה: שימוש באירוע 'כאשר נוגע' ליצירת תגובה בין דמויות."),
+        L("15. שליחת מסרים בצבעים", "מטרה: דמות אחת שולחת מסר ודמות אחרת מגיבה (שלח מסר / כשמתקבל מסר)."),
+        L("16. דיאלוג בין שתי דמויות", "מטרה: תזמון שיחה בין דמויות בעזרת מסרים ו'המתן'."),
+      ]},
+      { name: "יחידה 5: לולאות ושליטה", lessons: [
+        L("17. בלוק חזור – מה חוזר על עצמו?", "מטרה: זיהוי דפוסים והחלפת רצף חוזר בבלוק 'חזור'."),
+        L("18. לולאה לנצח וריקוד דמויות", "מטרה: שימוש ב'חזור לנצח' ליצירת אנימציה מתמשכת."),
+        L("19. עצור ועמודים (Pages)", "מטרה: עצירת דמויות ומעבר בין עמודים בפרויקט."),
+        L("20. אתגר לולאות – אנימציה של טבע / מזג אוויר", "מטרה: יישום לולאות ותזמון בפרויקט קצר."),
+      ]},
+      { name: "יחידה 6: סיפור דיגיטלי", lessons: [
+        L("21. תכנון סיפור – התחלה, אמצע וסוף (סטוריבורד)", "מטרה: תכנון סיפור על דף לפני התכנות."),
+        L("22. בניית סצנה ראשונה ודמויות", "מטרה: יישום התכנון – רקע, דמויות ודיאלוג."),
+        L("23. מעבר בין סצנות בעזרת עמודים", "מטרה: שימוש ב'עבור לעמוד' להמשך העלילה."),
+        L("24. הצגת הסיפורים ומשוב עמיתים", "מטרה: הצגה בכיתה ומתן משוב מכבד."),
+      ]},
+      { name: "יחידה 7: משחקים", lessons: [
+        L("25. משחק 'תפוס אותי' – לחיצה על דמות נעה", "מטרה: שילוב לולאה, תנועה ואירוע לחיצה."),
+        L("26. משחק מרוץ בין שתי דמויות", "מטרה: שימוש במהירויות שונות ובאירוע 'כאשר נוגע' לזיהוי מנצח."),
+        L("27. משחק מבוך עם מכשולים", "מטרה: יישום כל המיומנויות במשחק קצר."),
+        L("28. שיפור ודיבאגינג של המשחק", "מטרה: בדיקת המשחק, איתור באגים ותיקונם."),
+      ]},
+      { name: "יחידה 8: פרויקט מסכם", lessons: [
+        L("29. פרויקט מסכם – תכנון ובנייה", "מטרה: פרויקט חופשי (סיפור / משחק / כרטיס ברכה) המשלב תנועה, מראה, מסרים ולולאות."),
+        L("30. תערוכת פרויקטים וסיכום שנה", "מטרה: הצגת הפרויקטים, רפלקציה וחלוקת תעודות."),
+      ]},
+    ];
+
+    const MICROBIT_UNITS = [
+      { name: "חלק א': תכנות הלוח הבודד ותקשורת רדיו (שיעורים 1–10)", lessons: [
+        MB("1. הכרת לוח Micro:bit וסביבת MakeCode",
+          "התלמידים יכירו את רכיבי לוח ה-Micro:bit (מסך LED, מעבד, חיבור USB) ויעלו קוד ראשון מסביבת MakeCode.",
+          "מהו מיקרו-בקר? הכרת הלוח, כבל ה-USB וסביבת הבלוקים MakeCode.",
+          "יצירת פרויקט חדש, חיבור הלוח למחשב ושימוש בבלוק show string להצגת שמם.",
+          "התלמידים כותבים תוכנית שמציגה \"שלום\" ולאחר מכן מציגה אייקון של לב פועם בלולאה אינסופית (forever).",
+          "אתגר סייבר: יצירת \"תעודת זהות דיגיטלית\" המציגה קוד משתמש ייחודי בעת חיבור לחשמל."),
+        MB("2. תצוגת נוריות LED ואנימציות",
+          "התלמידים יבינו כיצד מטריצת ה-LED (5x5) פועלת ויצרו אנימציה מרובת פריימים.",
+          "מהי מטריצה? הסבר על קואורדינטות (X,Y) ופיקסלים על המסך.",
+          "שימוש בבלוקים show leds ו-pause ליצירת תנועה חזותית.",
+          "בניית אנימציה בת 4 פריימים לפחות (למשל: סמיילי שממצמץ, חץ זז, או טעינת סוללה).",
+          "יצירת \"אות אזהרה\" מרצד המדמה נורית חירום בסייבר."),
+        MB("3. קלט מבוסס לחצנים (A/B)",
+          "התלמידים יבינו את המושג קלט (Input) לעומת פלט (Output) וישתמשו בלחיצות A, B ו-A+B.",
+          "מהו קלט? כיצד לחצנים סוגרים מעגל חשמלי ומעבירים אות למיקרו-בקר.",
+          "שימוש באירוע on button A pressed להצגת צורה א', ואירוע button B להצגת צורה ב'.",
+          "בניית \"מנגנון בחירה\": A מציג \"כן\", B מציג \"לא\", ו-A+B מוחק את המסך.",
+          "תכנות לחצן משולב (A+B) לתפקוד כ\"לחצן איפוס\" מוגן."),
+        MB("4. שימוש במשתנים ותנאים פשוטים (If-Then)",
+          "התלמידים יבינו מהו משתנה בזיכרון המחשב וכיצד תנאי מבוסס בוליאני מקבל החלטה.",
+          "מהו משתנה? דימוי לקופסה עם שם שמאוחסן בה ערך משתנה.",
+          "הגדרת משתנה score, הגדלתו ב-1 בכל לחיצה על A, ובדיקת התנאי if score > 5.",
+          "בניית מונה לחיצות. אם המונה מגיע ל-10, מופיעה אזעקה ויזואלית והמונה מאופס.",
+          "בניית משחק \"מזל או זריזות\" המאפשר ניקוד רק בתנאי ספציפי."),
+        MB("5. חיישן תנועה ומד-תאוצה מובנה",
+          "התלמידים יכירו את חיישן התנועה (Accelerometer) ויממשו אירועי תנועה (ניעור, הטיה).",
+          "כיצד המחשב מזהה תנועה במרחב? מד תאוצה וצירים.",
+          "תכנות אירוע on shake וקריאת ערכי הטיה ימינה/שמאלה.",
+          "בניית קוביית משחק דיגיטלית: ניעור הלוח יגריל מספר אקראי בין 1 ל-6.",
+          "בניית \"גלאי תנועה\" המפעיל אזעקה אם ה-Micro:bit הוזז ממקומו."),
+        MB("6. חיישני אור ומצפן מובנים",
+          "התלמידים יקראו נתונים רציפים מציוד הקלט המובנה בלוח (אור ומצפן).",
+          "קלט אנלוגי מול דיגיטלי. הפיכת רמת תאורה (0-255) ומעלות מצפן (0-359) למידע שימושי.",
+          "הצגת ערך light level בלופ וכתיבת תנאי להדלקת LED כשחשוך.",
+          "בניית גלאי כיוונים פשוט (מצפן) ומנורת לילה אוטומטית מובנית.",
+          "כיול סף האור על פי תנאי התאורה בכיתה."),
+        MB("7. מבוא לתקשורת אלחוטית (Radio Group)",
+          "התלמידים ילמדו על תקשורת בגלי רדיו ויגדירו ערוץ תקשורת מוצפן/מופרד בין לוחות.",
+          "איך מכשירים מדברים באוויר? תדרים, ערוצי רדיו (Group) והצורך בבידוד רשתות.",
+          "הגדרת radio set group בקוד ושליחת אות פשוט מלוח משדר ללוח קולט.",
+          "זוגות תלמידים מגדירים ערוץ פרטי: בלחיצה על A בלוח 1, נדלקת LED בלוח 2.",
+          "ניסוי \"ציתות ברשת\" – מה קורה כאשר שתי קבוצות משדרות באותו ערוץ?"),
+        MB("8. שידור וקליטת הודעות טקסט (Radio Send/Receive)",
+          "התלמידים ישדרו ויקלטו מחרוזות טקסט ויציגו אותן על גבי הלוח המקבל.",
+          "מנגנון חבילת מידע (Packet). איך טקסט עובר באוויר.",
+          "שימוש ב-radio send string ובאירוע הקליטה on radio received.",
+          "יצירת שלט רחוק אלחוטי לשליחת אימוג'ים בין זוגות.",
+          "הצפנה פשוטה: שליחת מילת קוד במקום הטקסט הגלוי."),
+        MB("9. שידור נתונים מספריים",
+          "התלמידים ישדרו נתונים מספריים שנמדדו בחיישן מלוח קצה ללוח בקרה.",
+          "ניטור מרחוק (Telemetry). מדוע חשוב לשדר נתונים בזמן אמת?",
+          "שימוש ב-radio send number למדידת אור ושידורה באוויר.",
+          "לוח א' מודד רמת אור ומשדר. לוח ב' מקבל את המספר ומציג דיאגרמת עמודה (Graph).",
+          "הגדרת התרעה בלוח הבקרה אם המספר המתקבל חורג מהסף."),
+        MB("10. פרויקט סיכום שלב 1 – צ'אט אלחוטי מוגן (Walkie-Talkie)",
+          "התלמידים יציגו שילוב של קלט, התניות, ותקשורת רדיו בבניית מכשיר קשר.",
+          "אפיון פרויקט: בניית מכשיר Walkie-Talkie דו-כיווני.",
+          "סקירת הארכיטקטורה: בחירת ערוץ סודי, שליחת הודעות ומענה חוזר.",
+          "כתיבת הקוד ובדיקת תקשורת מלאה בין הזוגות כולל חיווי ויזואלי.",
+          "הוספת מפתח הצפנה למספר המשודר."),
+      ]},
+      { name: "חלק ב': למידה מדורגת של מודולי WOM (שיעורים 11–22)", lessons: [
+        MB("11. לוח ההרחבה ופרוטוקולי חיבור",
+          "התלמידים יכירו את לוח ההרחבה, פיני ה-GND/VCC/Signal וכבלי ה-PH2.0.",
+          "חיבור ה-Micro:bit ללוח הרחבה. מניעת קצר וחיבור נכון.",
+          "חיבור כבל PH2.0 לפין P0 והסבר על צבעי הכבלים.",
+          "זיהוי יציאות הלוח, חיבור הלוח בבטחה ובדיקת מתח עבודה תקין.",
+          "בדיקת חיווי נורית המתח בלוח ההרחבה."),
+        MB("12. מודול תאורת RGB",
+          "התלמידים יחברו את מודול ה-RGB וישלבו צבעי יסוד ליצירת תאורה מותאמת.",
+          "תאורת RGB (Red, Green, Blue) – יצירת גוונים בחומרה.",
+          "טעינת הרחבת הבלוקים של WOM ב-MakeCode והפעלת צבעים.",
+          "בניית רמזור חכם המעביר צבעים (אדום, צהוב, ירוק) במרווחי זמן.",
+          "יצירת אפקט \"נשימה\" (מעבר הדרגתי בעוצמת האור) בצבע כחול."),
+        MB("13. מודול לחצן חיצוני (Button Module)",
+          "התלמידים יבחינו בין קלט פנימי לחיצוני וישתמשו במודול הלחצן של WOM.",
+          "מפסק דיגיטלי חיצוני. מתי נשתמש בלחצן על הלוח ומתי ברכיב חיצוני?",
+          "חיבור הלחצן ל-P1, קריאת מצב הלחצן (0/1) והפעלת ה-RGB בהתאם.",
+          "בניית לחצן תאורה: בלחיצה הראשונה האור נדלק, בשנייה כבה.",
+          "בניית לחצן מצוקה המציג הבהוב חירום."),
+        MB("14. מודול ג'ויסטיק / רוקר (Rocker Module)",
+          "התלמידים יקראו אותות אנלוגיים דו-ציריים (X, Y) ממודול הג'ויסטיק.",
+          "הג'ויסטיק כרכיב אנלוגי. שינוי התנגדות בציר X ובציר Y.",
+          "חיבור המודול לפינים אנלוגיים וקריאת ערכים בין 0 ל-1023.",
+          "הטיית ג'ויסטיק מזיזות נקודה במטריצת ה-LED.",
+          "הגדרת \"כפתור מרכזי\" בלחיצה פנימה על הג'ויסטיק."),
+        MB("15. מודול אור פוטו-סנסיטיבי",
+          "התלמידים ימדדו עוצמת אור חיצונית בעזרת חיישן LDR.",
+          "חיישן אור (LDR – Light Dependent Resistor).",
+          "חיבור החיישן לקלט אנלוגי והצגת מדד עוצמת האור.",
+          "תכנות חיישן יום/לילה המפעיל תאורה רק בחושך.",
+          "כיול סף הרגישות לתנאי התאורה בכיתה."),
+        MB("16. מודול אינפרא-אדום (Infrared Module)",
+          "התלמידים יבינו את מנגנון החזרת הקרן האינפרא-אדומה לזיהוי מכשולים.",
+          "אור בלתי נראה. משדר ומקלט IR לזיהוי החזרה מעצם.",
+          "כיוון פוטנציומטר הרגישות וזיהוי אות דיגיטלי לקרבה.",
+          "בניית גלאי מעבר המשמיע צפצוף כשהוא נחסם.",
+          "ספירת מספר העצמים שעברו מול החיישן."),
+        MB("17. מודול טמפרטורה ולחות (DHT11)",
+          "התלמידים יפענחו נתונים דיגיטליים משולבים של טמפרטורה ולחות.",
+          "חיישנים משולבים ומנגנון הנתונים הדיגיטליים.",
+          "קריאת פונקציות Read Temperature ו-Read Humidity.",
+          "בניית תחנה מטאורולוגית (לחצן A לטמפ', לחצן B ללחות).",
+          "הגדרת התרעת \"גל חום\" מעל 30 מעלות."),
+        MB("18. מודול מרחק אולטרסוני (Ultrasonic Module)",
+          "התלמידים יבינו את עקרון הד האולטרסאונד וימדדו מרחק בס\"מ.",
+          "איך עטלף רואה? גלי קול, מהירות הקול וחישוב זמן החזרה.",
+          "חיבור פיני Trigger ו-Echo וקריאת המרחק בס\"מ.",
+          "חיישן רוורס: ככל שהעצם קרוב יותר, תדר הצפצוף מהיר יותר.",
+          "סינון שגיאות קריאה (ערכים שליליים/אפס)."),
+        MB("19. מודול תצוגה דיגיטלית (Digital Tube Module)",
+          "התלמידים יציגו מספרים על גבי תצוגת 7-סגמנטים.",
+          "איך עובדת תצוגת ספרות? שליטה בנוריות לפי מקטעים.",
+          "אתחול התצוגה והצגת מספרים בני 4 ספרות באמצעות בלוקי הערכה.",
+          "בניית שעון עצר (Stopwatch) המציג שניות.",
+          "הצגת נתון מחיישן מרחק ישירות על הצג בזמן אמת."),
+        MB("20. מודול נפח/תנועת אדם (PIR)",
+          "התלמידים יזהו תנועת אדם במרחב באמצעות חיישן PIR תרמי.",
+          "קרינה אינפרא-אדומה הנפלטת מגוף האדם (Passive Infrared).",
+          "חיבור חיישן ה-PIR, הבנת זמן ההמתנה בין זיהוי לזיהוי.",
+          "בניית גלאי נפח למערכת אבטחה בבית חכם.",
+          "שמירת מספר הפעמים שזוהתה תנועה בחדר."),
+        MB("21. מודול זיהוי צבעים (Color Recognition)",
+          "התלמידים יזהו ויבחינו בין צבעים בעזרת חיישן החזרת אור RGB.",
+          "איך מכונה מזהה צבע? הארת המשטח ופענוח ערכי RGB שמוחזרים.",
+          "כיול החיישן מול כרטיסיות צבע.",
+          "התאמת תגובה: אדום מוצג כ-X, ירוק מוצג כ-V.",
+          "הדלקת מודול ה-RGB בצבע המדויק שהחיישן זיהה."),
+        MB("22. מנוע סרבו (Servo Drive)",
+          "התלמידים יפעילו מנוע סרבו וישלטו בזווית תנועה (0°–180°).",
+          "מהו מנוע סרבו? מנוע המכוון לזווית מדויקת.",
+          "חיבור הסרבו ופקודת servo write angle לזווית 0, 90 ו-180.",
+          "שליטה במנוע: A מסובב ל-0, B ל-180, ו-A+B לאמצע (90).",
+          "הנעת הזרוע בצורה הדרגתית באמצעות בלוק לולאה."),
+      ]},
+      { name: "חלק ג': פרויקטים מתקדמים מתוך הערכה (שיעורים 23–32)", lessons: [
+        MB("23. מנורת שולחן (Table Lamp)",
+          "יצירת מנורת שולחן אוטומטית המשנה עוצמה לפי תנאי התאורה בחדר.",
+          "תכנון מערכת אוטונומית של תאורה חכמה.",
+          "שילוב חיישן האור עם תנאי מקונן להפעלת ה-RGB.",
+          "בניית הדגם ותכנות שינוי הצבע ככל שהחדר מחשיך.",
+          "הוספת לחצן עקיפה (Override) המאפשר כיבוי ידני."),
+        MB("24. שליטה בתאורה בעזרת ג'ויסטיק (Rocker Control Light)",
+          "שימוש בג'ויסטיק לבחירת צבע ועוצמה במודול ה-RGB.",
+          "ממשק אדם-מכונה (UI/UX) בחומרה.",
+          "תרגום הטיות X לשינוי צבע, והטיות Y לשינוי עוצמה.",
+          "כתיבת הקוד המלא המאפשר בחירת צבע דינמית.",
+          "\"נעילת\" הצבע הנבחר בלחיצה על הג'ויסטיק פנימה."),
+        MB("25. תאורת חירום (Emergency Light)",
+          "בניית תאורת אזהרה שנדלקת אוטומטית בעת נפילת חשמל/חושך מוחלט.",
+          "תכנון מערכות בטיחות וגיבוי במבנים חכמים.",
+          "זיהוי חושך פתאומי בחיישן האור והפעלת הבהוב אדום/לבן + צפצוף.",
+          "בניית המערכת ושילוב תקשורת רדיו לשליחת הודעת התרעה.",
+          "הוספת לחצן השתקת אזעקה הפועל בלחיצה ממושכת."),
+        MB("26. גלאי אזעקה אינפרא-אדום (Infrared Warning Device)",
+          "יצירת היקף אבטחה מבוסס חיישן IR לזיהוי חדירה.",
+          "אבטחה היקפית והגנה על גבולות פיזיים.",
+          "חסימת קרן ה-IR מפעילה מנגנון נעילה ואזעקה קולית.",
+          "בניית הדגם ותכנות מנגנון הדריכה של האזעקה.",
+          "הצגת מספר החדירות על גבי מטריצת ה-LED."),
+        MB("27. מד-מרחק נייד (Hand-held Rangefinder)",
+          "יצירת כלי מדידה נייד עם חיישן אולטרסוני וצג דיגיטלי.",
+          "הנדסת אנוש ותכנון סרגל מדידה דיגיטלי.",
+          "הזרמת ערכי המרחק מהחיישן ישירות לצג.",
+          "תכנות כפתור \"Freeze\" המקפיא את הקריאה הנוכחית על הצג.",
+          "חיווי צליל כשהמד-מרחק נמצא במרחק מדויק מיעד מבוקש."),
+        MB("28. אזעקת תנועת אדם (Human Body Warning Device)",
+          "מערכת גילוי תנועה משולבת חיישן PIR, תאורה וזמזם.",
+          "הבדלים בין זיהוי מכשול (IR) לזיהוי נוכחות אדם (PIR).",
+          "שילוב קלט מ-PIR עם פלט מודול ה-RGB וזמזם.",
+          "בניית מערכת הדורשת \"סיסמת לחיצות\" בלוח כדי לכבות את האזעקה.",
+          "הוספת מנגנון השהיה המאפשר יציאה מהחדר."),
+        MB("29. מראה/מפתח צבעים (Color Recognition Project)",
+          "אימות זהות בעזרת מפתח פיזי מבוסס קוד צבע.",
+          "אימות זהות פיזי בעזרת מאפייני צבע.",
+          "תכנות התרעה: צבע ירוק = מורשה, צבע אדום = נדחה.",
+          "בניית קורא כרטיסי צבע שמבצע פעולה שונה ל-3 צבעים שונים.",
+          "נעילת המערכת לאחר 3 ניסיונות כושלים."),
+        MB("30. מדחום סביבתי (Thermometer)",
+          "הצגת טמפרטורה ולחות בזמן אמת על צג דיגיטלי.",
+          "ניטור סביבתי בחדרי שרתים ומעבדות.",
+          "קריאה רציפה מה-DHT11 ועדכון התצוגה בכל שנייה.",
+          "בניית מתקן המציג לסירוגין טמפרטורה ולחות בלולאה.",
+          "הפעלת תאורת RGB אדומה כשחם מדי וכחולה כשקר מדי."),
+        MB("31. מגב חלונות חכם (Smart Wiper)",
+          "הפעלת מנוע סרבו להזזת מגב בעת זיהוי עצם/תנאי סביבה.",
+          "מנגנוני משוב (Feedback Loop) באוטומציה של כלי תחבורה.",
+          "זיהוי תנאי (הפרעה בחיישן) והפעלת תנועת סרבו.",
+          "הרכבת זרוע מגב פיזית ותכנות סבבי ניקוי בזווית 0°–180°.",
+          "שינוי מהירות המגב לפי עוצמת האות מהחיישן."),
+        MB("32. מד-מרחק מסתובב (Rotating Rangefinder)",
+          "סיבוב חיישן מרחק בעזרת סרבו לסריקת המרחב (רדאר).",
+          "עקרון הסריקה הפיזית – סורקי לידאר ומכ\"מ.",
+          "סיבוב הסרבו במדרגות של 30 מעלות וביצוע מדידת מרחק.",
+          "סריקת גזרה של 180 מעלות ועצירה אם משהו מתקרב בתווך.",
+          "שידור זווית המכשול והמרחק ברדיו ללוח בקרה."),
+      ]},
+      { name: "חלק ד': פרויקטים יצירתיים ומבנים מבוססי אבני בנייה (שיעורים 33–40)", lessons: [
+        MB("33. דלת אוטומטית (Automatic Door)",
+          "פתיחת שער/דלת על ידי מנוע סרבו בזיהוי קרבה (אולטרסוני).",
+          "תכנון מבני והנדסי: המרת תנועת מנוע לפתיחת ציר דלת.",
+          "הרכבת הדגם הפיזי וחיבור זרוע הסרבו לציר הדלת.",
+          "תכנות הדלת להפתח כשאדם מתקרב ולהסגר כשמתרחק.",
+          "הוספת נורית RGB ירוקה (פתוח) ואדומה (סגור)."),
+        MB("34. פלטפורמת הרמה / מעלית (Lifting Platform)",
+          "בניית מתקן הרמה מכני מבוסס אבני בנייה ושליטה על גובהו.",
+          "עקרונות הנדסת מכונות: תמסורת זרועות והרמת משאות.",
+          "הרכבת הפלטפורמה וחיבור הסרבו ליצירת מנגנון מעלית.",
+          "שליטה במעלית באמצעות לחצנים הקובעים 3 קומות שונות.",
+          "הצגת מספר הקומה הנוכחית על התצוגה הדיגיטלית."),
+        MB("35. חמנייה עוקבת אור (Sunflower)",
+          "בניית דגם חמנייה המסתובבת אוטומטית לעבר מקור האור החזק ביותר.",
+          "ביומימטיקה (Biomimicry) – עקוב אחר השמש.",
+          "השוואת קריאות חיישן האור תוך כדי צידוד זרוע הסרבו.",
+          "אלגוריתם חיפוש זווית בעלת עוצמת האור המרבית.",
+          "חזרה למצב מוצא כשאור בחדר כבה לחלוטין."),
+        MB("36. כספת חכמה / קופה (Piggy Bank)",
+          "קופה מאבני בנייה המזהה הכנסת מטבעות וכוללת נעילה חשמלית.",
+          "אבטחה פיזית ואוטומציה של ספירת נכסים.",
+          "חיבור חיישן IR בפתח הכניסה ומנוע סרבו כנועל מכסה.",
+          "כל מטבע מגדיל את המונה, והסרבו נפתח רק בהקשת קוד.",
+          "הצגת יתרת המטבעות המצטברת על הצג הדיגיטלי."),
+        MB("37. תפסן / זרוע איסוף (UFO Catcher)",
+          "בניית תפסן מכני המופעל באמצעות ג'ויסטיק לאיסוף עצמים.",
+          "תכנון רובוטיקה תפעולית – זרועות אחיזה.",
+          "הרכבת דגם התפסן וחיבור מנוע הסרבו למנגנון האחיזה.",
+          "שימוש בג'ויסטיק לסגירה ופתיחה של מנגנון התפסן.",
+          "הוספת חיווי צליל ותאורה בעת תפיסה מוצלחת."),
+        MB("38. ממיין צבעים (Color Sorter)",
+          "הזזת זרוע הסרבו לזווית מתאימה לניתוב חפצים לפי הצבע שזוהה.",
+          "אוטומציה בתעשייה – מיון קווי ייצור מבוסס חיישנים.",
+          "הרכבת מסלול ניתוב בו הסרבו משמש ככף ניתוב.",
+          "זיהוי צבע והזזת הסרבו לזווית המתאימה להשלכת החפץ לתיבה הנכונה.",
+          "ספירת מספר החפצים שמוינו מכל צבע."),
+        MB("39. פרויקט גמר – תכנון והרכבת דגם משולב",
+          "עבודה קבוצתית על תכנון מערכת סייבר-פיזית משולבת (2 חיישנים, מנוע ותקשורת).",
+          "הגדרת משימת הגמר: תכנון מערכת חכמה (למשל: עיר חכמה).",
+          "חלוקת תפקידים בקבוצה ואפיון תרשים זרימה.",
+          "הרכבת המבנה, חיבור המודולים ותחילת כתיבת הקוד.",
+          "בדיקת תקינות חומרה ראשונית ופתרון בעיות חיבורים."),
+        MB("40. פרויקט גמר – הצגה והדגמה",
+          "בחינת תקינות המערכות, בדיקת עמידות והצגת התוצרים בכיתה.",
+          "הכנות אחרונות להצגה והסבר על קריטריונים להערכה.",
+          "בדיקת עמידות המערכות בתנאים משתנים.",
+          "הצגת הפרויקטים על ידי הצוותים כולל הסבר על הקוד והחיישנים.",
+          "משוב עמיתים, דיון סיכום על עולם הרובוטיקה, וחלוקת תעודות."),
+      ]},
+    ];
+
+    const CODEMONKEY_UNITS = [
+      { name: "מחצית א' · יסודות התכנות – תנועה ו-Debugging (שיעורים 1–3)", lessons: [
+        L("1. הכרת סביבת העבודה ופקודות תנועה בסיסיות", "שלבים 1–3"),
+        L("2. תנועה, פניות ותיקון שגיאות ראשונות – Debugging", "שלבים 4–6"),
+        L("3. תכנון מסלול להשגת בננות מרוחקות ביעילות", "שלבים 7–9"),
+      ]},
+      { name: "מחצית א' · לולאות times (שיעורים 4–7)", lessons: [
+        L("4. זיהוי דפוסים חוזרים ומעבר מקוד ארוך ללולאה", "שלבים 21–23"),
+        L("5. היכרות עם תחביר הלולאה (times <-) ותרגול", "שלבים 24–26"),
+        L("6. שליטה מלאה בלולאות פשוטות באתגרים בינוניים", "שלבים 27–29"),
+        L("7. סיכום שבוע לולאות ואתגר אתגרים מיוחדים", "שלב 30 + חיזוק"),
+      ]},
+      { name: "מחצית א' · משתנים (שיעורים 8–14)", lessons: [
+        L("8. מבוא למשתנים: יצירת \"קופסה\" לשמירת ערך וטבלת המשתנים", "שלבים 31–33"),
+        L("9. שינוי ערכים של משתנים ושימוש בפקודת step איתם", "שלבים 34–36"),
+        L("10. משתנים בתוך לולאות – הגדלת הערך בכל צעד", "שלבים 37–39"),
+        L("11. מעקב אחר ערכים משתנים ותרגול מודל מתמטי בקוד", "שלבים 40–42"),
+        L("12. שילוב עמוק של משתנים ולולאות", "שלבים 43–45"),
+        L("13. אתגרי משתנים מורכבים", "שלבים 46–48"),
+        L("14. סיכום יחידת משתנים", "שלבים 49–50"),
+      ]},
+      { name: "מחצית א' · מערכים ואינדקסים (שיעורים 15–18)", lessons: [
+        L("15. מבוא למערכים והבנת האינדקס הראשון (0) (bananas[0])", "שלבים 51–53"),
+        L("16. גישה לפריטים שונים במערך כמו צבים או שיחים", "שלבים 54–56"),
+        L("17. ניווט מבוסס אינדקסים מדויקים", "שלבים 57–59"),
+        L("18. סיכום מערכים ואינדקסים", "שלב 60 + תרגול רוחב"),
+      ]},
+      { name: "מחצית א' · לולאות For (שיעורים 19–25)", lessons: [
+        L("19. מעבר מאינדקסים ללולאת for אוטומטית", "שלבים 61–63"),
+        L("20. תחביר לולאת For (for b in bananas) והבנת ריצת המחשב", "שלבים 64–66"),
+        L("21. הפעלת לולאות For על מערכי עצמים שונים (כמו צבים)", "שלבים 67–69"),
+        L("22. יישום מתקדם של לולאות For לחיסכון בכתיבת קוד", "שלבים 70–72"),
+        L("23. אתגרי מאסטר בלולאות For", "שלבים 73–75"),
+        L("24–25. חזרה ופרויקט ביניים מסכם למחצית א'", ""),
+      ]},
+      { name: "מחצית ב' · פונקציות (שיעורים 26–30)", lessons: [
+        L("26. מבוא לפונקציות: בלוק פעולות שרץ רק בקריאה אליו", "שלבים 76–78"),
+        L("27. מתן שמות משמעותיים ומניעת כפילות קוד", "שלבים 79–81"),
+        L("28. פונקציות עם פרמטר אחד (goto = (t) ->)", "שלבים 82–84"),
+        L("29. פונקציות מתקדמות עם מספר פרמטרים וארגומנטים", "שלבים 85–87"),
+        L("30. אתגרי פונקציות מתקדמים וסיום היחידה", "שלבים 88–90"),
+      ]},
+      { name: "מחצית ב' · לולאות until (שיעורים 31–35)", lessons: [
+        L("31. לולאות \"עד ש...\" (until) – שאלת תנאי לפני כל צעד", "שלבים 91–93"),
+        L("32. תנאי קרבה לעצם (near)", "שלבים 94–96"),
+        L("33. בדיקת מצב שינה של חיות (cat.sleeping())", "שלבים 97–99"),
+        L("34. שילוב מספר תנאים בלולאות until", "שלבים 100–102"),
+        L("35. מניעת לולאות אינסופיות ואתגרי until מורכבים", "שלבים 103–105"),
+      ]},
+      { name: "מחצית ב' · תנאים if / if-else (שיעורים 36–41)", lessons: [
+        L("36. קבלת החלטות באמצעות if – טיפול בבננות קפואות", "שלבים 106–108"),
+        L("37. הרחבת משפטי התנאי ובדיקות נכונות", "שלבים 109–111"),
+        L("38. מבוא למשפטי if-else (פיצול דרכים לפי תנאי)", "שלבים 112–114"),
+        L("39. ניתוב דמויות שונות לפי מאפיינים באמצעות if-else", "שלבים 115–117"),
+        L("40. תרגול מעמיק בקבלת החלטות מורכבות", "שלבים 118–121"),
+        L("41. סיכום משפטי תנאי", "שלבים 122–124"),
+      ]},
+      { name: "מחצית ב' · אופרטורים לוגיים and / or (שיעורים 42–47)", lessons: [
+        L("42. האופרטור and – שילוב שני תנאים שחייבים להתקיים יחד", "שלבים 125–128"),
+        L("43. יישום and בלולאות until ובתנאים", "שלבים 129–132"),
+        L("44. האופרטור or – תנאי שבו די באחד מהתנאים כדי להצליח", "שלבים 133–136"),
+        L("45. שימוש ב-or עם חיות ישנות או משחקות", "שלבים 137–140"),
+        L("46. שילוב מתקדם של and ו-or באותו האתגר", "שלבים 141–143"),
+        L("47. אתגרי המאסטר האחרונים של הקורס", "שלבים 144–145"),
+      ]},
+    ];
+
+    // =========================================================
+    // 🏫 שכבות ומקצועות
+    // כל תכנית = שכבה + מקצוע (למשל g_mb = שכבה ג' · מיקרוביט)
+    // =========================================================
+    const SUBJECTS = {
+      sj: { label: "🐱 סקראץ' ג'וניור", units: SCRATCHJR_UNITS, draft: true },
+      mb: { label: "🤖 רובוטיקה – מיקרוביט", units: MICROBIT_UNITS },
+      cm: { label: "🐵 קוד מאנקי", units: CODEMONKEY_UNITS }
+    };
+
+    const GRADES = [
+      { key: 'b', label: "כיתה ב'", subjects: ['sj'], classes: ["ב'1", "ב'2"] },
+      { key: 'g', label: "שכבה ג'", subjects: ['mb', 'cm'], classes: ["ג'1", "ג'2"] },
+      { key: 'd', label: "שכבה ד'", subjects: ['mb', 'cm'], classes: ["ד'1", "ד'2"] },
+      { key: 'h', label: "שכבה ה'", subjects: ['mb', 'cm'], classes: ["ה'1", "ה'2"] },
+      { key: 'v', label: "שכבה ו'", subjects: ['mb', 'cm'], classes: ["ו'1", "ו'2"] }
+    ];
+
+    let currentGrade = GRADES[0].key;
+    let currentSubject = GRADES[0].subjects[0];
+    // זוכר את המקצוע האחרון שנבחר בכל שכבה
+    const lastSubjectByGrade = {};
+
+    const gradeInfo = (g) => GRADES.find(x => x.key === g);
+    const planKey = () => `${currentGrade}_${currentSubject}`;
+
+    function getCurriculumData(key) {
+      const stored = store.get(`curriculum_${key}`);
+      if (stored) return JSON.parse(stored);
+      const [g, s] = key.split('_');
+      const units = (SUBJECTS[s] && SUBJECTS[s].units) || [];
+      return {
+        name: `${gradeInfo(g).label} · ${SUBJECTS[s].label}`,
+        months: JSON.parse(JSON.stringify(units))
+      };
+    }
+
+    function saveCurriculumData(key, data) {
+      store.set(`curriculum_${key}`, JSON.stringify(data));
+      window.scheduleCloudSync();
+    }
+
+    // הכיתות משותפות לכל המקצועות של השכבה
+    function getClasses(g) {
+      const stored = store.get(`classes_${g}`);
+      if (stored) return JSON.parse(stored);
+      return [...gradeInfo(g).classes];
+    }
+
+    function saveClasses(g, classesArray) {
+      store.set(`classes_${g}`, JSON.stringify(classesArray));
+      window.scheduleCloudSync();
+    }
+
+    function renderTabs() {
+      const gradeTabs = document.getElementById('gradeTabs');
+      gradeTabs.innerHTML = '';
+      GRADES.forEach(g => {
+        const btn = document.createElement('button');
+        btn.className = 'tab-btn' + (g.key === currentGrade ? ' active' : '');
+        btn.innerText = g.subjects.length === 1 ? `${g.label} – ${SUBJECTS[g.subjects[0]].label.replace(/^\S+\s/, '')}` : g.label;
+        btn.onclick = () => window.switchGrade(g.key);
+        gradeTabs.appendChild(btn);
+      });
+
+      const subjectTabs = document.getElementById('subjectTabs');
+      const g = gradeInfo(currentGrade);
+      subjectTabs.innerHTML = '';
+      subjectTabs.classList.toggle('visible', g.subjects.length > 1);
+      g.subjects.forEach(s => {
+        const btn = document.createElement('button');
+        btn.className = 'subject-btn' + (s === currentSubject ? ' active' : '');
+        btn.innerText = SUBJECTS[s].label;
+        btn.onclick = () => window.switchSubject(s);
+        subjectTabs.appendChild(btn);
+      });
+    }
+
+    function renderCriteria(text) {
+      const lines = text.trim().split('\n');
+      if (lines.length === 1) {
+        const div = document.createElement('div');
+        div.className = 'assessment-criteria';
+        div.innerText = `🎯 ${lines[0]}`;
+        return div;
+      }
+      const details = document.createElement('details');
+      details.className = 'assessment-criteria';
+      const summary = document.createElement('summary');
+      summary.innerText = `🎯 ${lines[0]}`;
+      details.appendChild(summary);
+      details.appendChild(document.createTextNode(lines.slice(1).join('\n')));
+      return details;
+    }
+
+    function renderPlan() {
+      const key = planKey();
+      const data = getCurriculumData(key);
+      const classes = getClasses(currentGrade);
+      const container = document.getElementById('planView');
+      container.innerHTML = '';
+
+      (data.months || []).forEach((unit, mIdx) => {
+        const unitCard = document.createElement('div');
+        unitCard.className = 'month-card';
+
+        const unitHeader = document.createElement('div');
+        unitHeader.className = 'month-header';
+        unitHeader.innerText = unit.name;
+        unitCard.appendChild(unitHeader);
+
+        (unit.lessons || []).forEach((lessonObj, lIdx) => {
+          const lessonId = `${key}_m${mIdx}_l${lIdx}`;
+          const lessonItem = document.createElement('div');
+          lessonItem.className = 'lesson-item';
+          lessonItem.id = `item_${lessonId}`;
+
+          const lessonContent = document.createElement('div');
+          lessonContent.className = 'lesson-content';
+
+          const lessonText = document.createElement('div');
+          lessonText.className = 'lesson-text';
+          lessonText.innerText = lessonObj.text || lessonObj;
+          lessonContent.appendChild(lessonText);
+
+          if (lessonObj.criteria && lessonObj.criteria.trim() !== '') {
+            lessonContent.appendChild(renderCriteria(lessonObj.criteria));
+          }
+
+          lessonItem.appendChild(lessonContent);
+
+          const checkboxesDiv = document.createElement('div');
+          checkboxesDiv.className = 'checkboxes';
+
+          classes.forEach((cls) => {
+            const cbId = `${lessonId}_cls_${cls}`;
+            const label = document.createElement('label');
+            label.className = 'checkbox-label';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = store.get(cbId) === 'true';
+
+            checkbox.addEventListener('change', () => {
+              store.set(cbId, checkbox.checked);
+              updateLessonStatus(lessonId, classes);
+              updateSummary();
+              window.scheduleCloudSync();
+            });
+
+            label.appendChild(checkbox);
+            label.appendChild(document.createTextNode(cls));
+            checkboxesDiv.appendChild(label);
+          });
+
+          lessonItem.appendChild(checkboxesDiv);
+          unitCard.appendChild(lessonItem);
+        });
+        container.appendChild(unitCard);
+      });
+
+      (data.months || []).forEach((unit, mIdx) => {
+        (unit.lessons || []).forEach((_, lIdx) => updateLessonStatus(`${key}_m${mIdx}_l${lIdx}`, classes));
+      });
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const data = getCurriculumData(planKey());
+      const items = document.querySelectorAll('#planView .lesson-item');
+      const done = document.querySelectorAll('#planView .lesson-item.green').length;
+      const pct = items.length ? Math.round(done / items.length * 100) : 0;
+      const summary = document.getElementById('planSummary');
+      summary.innerHTML = '';
+
+      const title = document.createElement('div');
+      title.className = 'plan-title';
+      title.innerText = data.name;
+      summary.appendChild(title);
+
+      const progress = document.createElement('div');
+      progress.className = 'plan-progress';
+      progress.innerHTML = `<span>הושלמו ${done} מתוך ${items.length} שיעורים (${pct}%)</span><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>`;
+      summary.appendChild(progress);
+
+      if (SUBJECTS[currentSubject].draft && !store.get(`curriculum_${planKey()}`)) {
+        const note = document.createElement('div');
+        note.className = 'draft-note';
+        note.innerText = "📌 טיוטה: תכנית סקראץ' ג'וניור לא צורפה – זו הצעה ראשונית. אפשר לערוך, להוסיף ולמחוק שיעורים ב'ניהול שיעורים'.";
+        summary.appendChild(note);
+      }
+    }
+
+    function updateLessonStatus(lessonId, classes) {
+      const itemElem = document.getElementById(`item_${lessonId}`);
+      if (!itemElem) return;
+      itemElem.classList.remove('yellow', 'green');
+      if (!classes || classes.length === 0) return;
+
+      const checkedCount = classes.filter(cls => store.get(`${lessonId}_cls_${cls}`) === 'true').length;
+      if (checkedCount === classes.length) {
+        itemElem.classList.add('green');
+      } else if (checkedCount > 0) {
+        itemElem.classList.add('yellow');
+      }
+    }
+
+    window.switchGrade = function(gradeKey) {
+      lastSubjectByGrade[currentGrade] = currentSubject;
+      currentGrade = gradeKey;
+      const g = gradeInfo(gradeKey);
+      currentSubject = g.subjects.includes(lastSubjectByGrade[gradeKey]) ? lastSubjectByGrade[gradeKey] : g.subjects[0];
+      refreshView();
+    };
+
+    window.switchSubject = function(subjectKey) {
+      currentSubject = subjectKey;
+      refreshView();
+    };
+
+    window.filterLessons = function() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const status = document.getElementById('statusFilter').value;
+
+      document.querySelectorAll('#planView .lesson-item').forEach(item => {
+        const text = item.textContent.toLowerCase();
+        const matchesQuery = text.includes(query);
+
+        let matchesStatus = true;
+        if (status === 'red') matchesStatus = !item.classList.contains('yellow') && !item.classList.contains('green');
+        if (status === 'yellow') matchesStatus = item.classList.contains('yellow');
+        if (status === 'green') matchesStatus = item.classList.contains('green');
+
+        item.style.display = (matchesQuery && matchesStatus) ? 'flex' : 'none';
+      });
+    };
+
+    // ===================== ניהול שיעורים =====================
+
+    function fillMgrUnits(selectIdx = 0) {
+      const data = getCurriculumData(planKey());
+      const monthSelect = document.getElementById('mgrMonthSelect');
+      monthSelect.innerHTML = '';
+      (data.months || []).forEach((m, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.innerText = m.name;
+        monthSelect.appendChild(opt);
+      });
+      if (monthSelect.options.length > 0) {
+        monthSelect.selectedIndex = Math.min(selectIdx, monthSelect.options.length - 1);
+        window.onMgrMonthChange();
+      }
+    }
+
+    window.openLessonManagerModal = function() {
+      document.getElementById('lessonManagerHeader').innerText = `ניהול שיעורים · ${getCurriculumData(planKey()).name}`;
+      fillMgrUnits();
+      document.getElementById('lessonManagerModal').style.display = 'flex';
+    };
+
+    window.closeLessonManagerModal = function() {
+      document.getElementById('lessonManagerModal').style.display = 'none';
+    };
+
+    window.addUnit = function() {
+      const name = prompt('שם היחידה החדשה:');
+      if (!name || !name.trim()) return;
+      const data = getCurriculumData(planKey());
+      data.months.push({ name: name.trim(), lessons: [] });
+      saveCurriculumData(planKey(), data);
+      renderPlan();
+      fillMgrUnits(data.months.length - 1);
+    };
+
+    window.renameUnit = function() {
+      const data = getCurriculumData(planKey());
+      const mIdx = parseInt(document.getElementById('mgrMonthSelect').value);
+      if (isNaN(mIdx)) return;
+      const name = prompt('שם חדש ליחידה:', data.months[mIdx].name);
+      if (!name || !name.trim()) return;
+      data.months[mIdx].name = name.trim();
+      saveCurriculumData(planKey(), data);
+      renderPlan();
+      fillMgrUnits(mIdx);
+    };
+
+    window.onMgrMonthChange = function() {
+      const data = getCurriculumData(planKey());
+      const monthVal = document.getElementById('mgrMonthSelect').value;
+      if (!monthVal) return;
+      const mIdx = parseInt(monthVal);
+      const lessonSelect = document.getElementById('mgrLessonSelect');
+
+      lessonSelect.innerHTML = '<option value="new">[+ הוסף שיעור חדש ליחידה זו]</option>';
+      if (data.months[mIdx] && data.months[mIdx].lessons) {
+        data.months[mIdx].lessons.forEach((l, idx) => {
+          const opt = document.createElement('option');
+          opt.value = idx;
+          opt.innerText = l.text || l;
+          lessonSelect.appendChild(opt);
+        });
+      }
+
+      lessonSelect.selectedIndex = 0;
+      window.onMgrLessonChange();
+    };
+
+    window.onMgrLessonChange = function() {
+      const data = getCurriculumData(planKey());
+      const mIdx = parseInt(document.getElementById('mgrMonthSelect').value);
+      const lVal = document.getElementById('mgrLessonSelect').value;
+
+      const btnDelete = document.getElementById('btnDeleteMgrLesson');
+      const btnMoveUp = document.getElementById('btnMoveUpMgrLesson');
+      const btnMoveDown = document.getElementById('btnMoveDownMgrLesson');
+
+      if (lVal === 'new') {
+        document.getElementById('mgrLessonTitle').value = '';
+        document.getElementById('mgrLessonCriteria').value = '';
+
+        btnDelete.style.display = 'none';
+        btnMoveUp.style.display = 'none';
+        btnMoveDown.style.display = 'none';
+      } else {
+        const lIdx = parseInt(lVal);
+        const lessonObj = data.months[mIdx].lessons[lIdx];
+        document.getElementById('mgrLessonTitle').value = lessonObj.text || lessonObj || '';
+        document.getElementById('mgrLessonCriteria').value = lessonObj.criteria || '';
+
+        btnDelete.style.display = 'inline-flex';
+        btnMoveUp.style.display = lIdx > 0 ? 'inline-flex' : 'none';
+        btnMoveDown.style.display = lIdx < data.months[mIdx].lessons.length - 1 ? 'inline-flex' : 'none';
+      }
+    };
+
+    window.saveMgrLesson = function() {
+      const data = getCurriculumData(planKey());
+      const mIdx = parseInt(document.getElementById('mgrMonthSelect').value);
+      const lVal = document.getElementById('mgrLessonSelect').value;
+      const title = document.getElementById('mgrLessonTitle').value.trim();
+      const criteria = document.getElementById('mgrLessonCriteria').value.trim();
+
+      if (isNaN(mIdx)) { alert('יש ליצור יחידה קודם'); return; }
+      if (!title) { alert('נא להזין שם לשיעור'); return; }
+
+      const lessonObj = { text: title, criteria: criteria };
+
+      if (lVal === 'new') {
+        if (!data.months[mIdx].lessons) data.months[mIdx].lessons = [];
+        data.months[mIdx].lessons.push(lessonObj);
+      } else {
+        data.months[mIdx].lessons[parseInt(lVal)] = lessonObj;
+      }
+
+      saveCurriculumData(planKey(), data);
+      window.closeLessonManagerModal();
+      renderPlan();
+      window.filterLessons();
+    };
+
+    // מזיז את סימוני הכיתות של השיעורים שאחרי המחוק שורה אחת למעלה
+    function shiftLessonMarks(mIdx, fromIdx, count) {
+      const key = planKey();
+      const classes = getClasses(currentGrade);
+      for (let i = fromIdx; i < count - 1; i++) {
+        classes.forEach(cls => {
+          const next = store.get(`${key}_m${mIdx}_l${i + 1}_cls_${cls}`);
+          if (next !== null) store.set(`${key}_m${mIdx}_l${i}_cls_${cls}`, next);
+          else store.remove(`${key}_m${mIdx}_l${i}_cls_${cls}`);
+        });
+      }
+      classes.forEach(cls => store.remove(`${key}_m${mIdx}_l${count - 1}_cls_${cls}`));
+    }
+
+    window.deleteMgrLesson = function() {
+      const lVal = document.getElementById('mgrLessonSelect').value;
+      if (lVal === 'new') return;
+
+      if (!confirm('האם אתה בטוח שברצונך למחוק שיעור זה?')) return;
+
+      const data = getCurriculumData(planKey());
+      const mIdx = parseInt(document.getElementById('mgrMonthSelect').value);
+      const lIdx = parseInt(lVal);
+
+      shiftLessonMarks(mIdx, lIdx, data.months[mIdx].lessons.length);
+      data.months[mIdx].lessons.splice(lIdx, 1);
+      saveCurriculumData(planKey(), data);
+      window.closeLessonManagerModal();
+      renderPlan();
+      window.filterLessons();
+    };
+
+    window.moveMgrLesson = function(direction) {
+      const key = planKey();
+      const data = getCurriculumData(key);
+      const mIdx = parseInt(document.getElementById('mgrMonthSelect').value);
+      const lVal = document.getElementById('mgrLessonSelect').value;
+      if (lVal === 'new') return;
+
+      const lIdx = parseInt(lVal);
+      const lessons = data.months[mIdx].lessons;
+      const newIdx = lIdx + direction;
+
+      if (newIdx < 0 || newIdx >= lessons.length) return;
+
+      [lessons[lIdx], lessons[newIdx]] = [lessons[newIdx], lessons[lIdx]];
+
+      getClasses(currentGrade).forEach(cls => {
+        const id1 = `${key}_m${mIdx}_l${lIdx}_cls_${cls}`;
+        const id2 = `${key}_m${mIdx}_l${newIdx}_cls_${cls}`;
+        const val1 = store.get(id1);
+        const val2 = store.get(id2);
+
+        if (val1 !== null) store.set(id2, val1);
+        else store.remove(id2);
+
+        if (val2 !== null) store.set(id1, val2);
+        else store.remove(id1);
+      });
+
+      saveCurriculumData(key, data);
+      renderPlan();
+      window.filterLessons();
+
+      window.onMgrMonthChange();
+      document.getElementById('mgrLessonSelect').value = newIdx;
+      window.onMgrLessonChange();
+    };
+
+    // ===================== ניהול כיתות =====================
+
+    window.openClassModal = function() {
+      document.getElementById('classModalHeader').innerText = `ניהול כיתות · ${gradeInfo(currentGrade).label}`;
+      const listContainer = document.getElementById('modalClassList');
+      listContainer.innerHTML = '';
+
+      getClasses(currentGrade).forEach((cls, idx) => {
+        const row = document.createElement('div');
+        row.className = 'class-row';
+        const span = document.createElement('span');
+        span.innerText = cls;
+        const del = document.createElement('button');
+        del.className = 'btn-delete';
+        del.innerText = 'מחק';
+        del.onclick = () => window.deleteClass(idx);
+        row.appendChild(span);
+        row.appendChild(del);
+        listContainer.appendChild(row);
+      });
+
+      document.getElementById('classModal').style.display = 'flex';
+    };
+
+    window.closeClassModal = function() {
+      document.getElementById('classModal').style.display = 'none';
+      renderPlan();
+      window.filterLessons();
+    };
+
+    window.addClass = function() {
+      const input = document.getElementById('newClassInput');
+      const className = input.value.trim();
+      if (!className) return;
+
+      const classes = getClasses(currentGrade);
+      if (classes.includes(className)) { alert('כיתה בשם זה כבר קיימת'); return; }
+      classes.push(className);
+      saveClasses(currentGrade, classes);
+
+      input.value = '';
+      window.openClassModal();
+    };
+
+    window.deleteClass = function(index) {
+      const classes = getClasses(currentGrade);
+      classes.splice(index, 1);
+      saveClasses(currentGrade, classes);
+      window.openClassModal();
+    };
+
+    // ===================== איפוס / ייצוא / ייבוא =====================
+
+    window.resetAll = function() {
+      if (confirm("האם אתה בטוח שברצונך לאפס את כל הסימונים והשינויים בתוכנית העבודה? הפעולה תמחק את כל הנתונים ותטען מחדש את התכנית המובנית.")) {
+        const sync = store.get('sync_id');
+        const firebaseCfg = store.get('custom_firebase_config');
+        store.clear();
+        if (sync) store.set('sync_id', sync);
+        if (firebaseCfg) store.set('custom_firebase_config', firebaseCfg);
+        window.scheduleCloudSync();
+        refreshView();
+      }
+    };
+
+    window.exportData = function() {
+      const data = collectLocalData();
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+      const downloadAnchor = document.createElement('a');
+      const dateStr = new Date().toISOString().slice(0,10);
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `coding_curriculum_backup_${dateStr}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    };
+
+    window.importData = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const importedData = JSON.parse(e.target.result);
+          if (confirm("האם למזג/להחליף את הנתונים הנוכחיים בנתונים מהקובץ שטען?")) {
+            Object.keys(importedData).forEach(key => {
+              if (!LOCAL_ONLY_KEYS.includes(key)) store.set(key, importedData[key]);
+            });
+            window.scheduleCloudSync();
+            refreshView();
+            alert("הנתונים נטענו בהצלחה!");
+          }
+        } catch (err) {
+          alert("קובץ ה-JSON אינו תקין.");
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = '';
+    };
+
+    async function initDataFlow() {
+        const initialized = await initFirebase();
+        let codeRevoked = false;
+
+        if (initialized && currentSyncId) {
+            try {
+                const docSnap = await getDoc(syncDocRef(currentSyncId));
+                if (docSnap.exists()) applyCloudData(currentSyncId, docSnap.data());
+            } catch (e) {
+                console.error("Failed to load from cloud", e);
+                if (isPermissionError(e)) codeRevoked = true;
+            }
+        }
+
+        updateCloudStatus(initialized ? 'online' : 'error');
+        refreshView();
+
+        if (codeRevoked) handleRevokedCode();
+        if (location.hash === '#admin') window.openAdminPage();
+    }
+
+    window.onload = initDataFlow;
+
+  </script>
+</body>
+</html>
